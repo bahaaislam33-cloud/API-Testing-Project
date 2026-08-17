@@ -1,5 +1,0 @@
-{
-  "devDependencies": {
-    "newman-reporter-allure": "^3.10.2"
-  }
-}
