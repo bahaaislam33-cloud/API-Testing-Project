@@ -1,0 +1,2462 @@
+{
+  "info": {
+    "_postman_id": "51afb841-7dcd-4b7e-9c96-37efe13af5c2",
+    "name": "Pets Store",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "46398196",
+    "_collection_link": "https://go.postman.co/collection/46398196-51afb841-7dcd-4b7e-9c96-37efe13af5c2?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Registration",
+      "item": [
+        {
+          "name": "create list of users",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "var timestamp = new Date(). getTime();\r",
+                  "\r",
+                  "console.log(timestamp)\r",
+                  "var userName = \"ahmedbahaa\" + timestamp;\r",
+                  "var firstName = \"Ahmed\" + timestamp;\r",
+                  "var lastName = \"Bahaa\" + timestamp;\r",
+                  "var email = \"ahmedbahaa\" + timestamp + \"@gmail.com\";\r",
+                  "console.log(firstName)\r",
+                  "console.log(userName)\r",
+                  "console.log(lastName)\r",
+                  "console.log(email)\r",
+                  "pm.collectionVariables.set(\"userName\", userName);\r",
+                  "pm.collectionVariables.set(\"firstName\", firstName);\r",
+                  "pm.collectionVariables.set(\"lastName\", lastName);\r",
+                  "pm.collectionVariables.set(\"email\", email)"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response time is less than 2000ms\", function () {\r",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response body is valid JSON\", function () {\r",
+                  "    pm.response.to.have.jsonBody();\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Response message is ok\", function () {\r",
+                  "    const jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.message).to.eql(\"ok\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response type is present\", function () {\r",
+                  "    const jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.type).to.be.a(\"string\").and.not.empty;\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Request body contains a non-empty user array\", function () {\r",
+                  "    const requestBody = pm.request.body ? pm.request.body.raw : \"[]\";\r",
+                  "    const users = JSON.parse(requestBody);\r",
+                  "    pm.expect(users).to.be.an(\"array\").that.is.not.empty;\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "[\r\n    {\r\n  \"id\": 0,\r\n  \"username\": \"{{userName}}\",\r\n  \"firstName\": \"{{firstName}}\",\r\n  \"lastName\": \"{{lastName}}\",\r\n  \"email\": \"{{email}}\",\r\n  \"password\": \"123456789\",\r\n  \"phone\": \"0123456789\",\r\n  \"userStatus\": 0\r\n}\r\n,\r\n{\r\n\"id\": 0,\r\n  \"username\": \"sila123\",\r\n  \"firstName\": \"Sila\",\r\n  \"lastName\": \"kill\",\r\n  \"email\": \"Silakill123@gmail.com\",\r\n  \"password\": \"123456789\",\r\n  \"phone\": \"0123456789\",\r\n  \"userStatus\": 0\r\n}\r\n\r\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{Base_URL}}/user/createWithArray",
+              "host": [
+                "{{Base_URL}}"
+              ],
+              "path": [
+                "user",
+                "createWithArray"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create a user while logged In",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Response time is under 2000ms', function () {\r",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Response body is valid JSON', function () {\r",
+                  "    pm.expect(function () {\r",
+                  "        pm.response.json();\r",
+                  "    }).to.not.throw();\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Response JSON has expected keys', function () {\r",
+                  "    const jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData).to.be.an('object');\r",
+                  "    pm.expect(jsonData).to.have.all.keys('code', 'type', 'message');\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Response JSON code is 200', function () {\r",
+                  "    const jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.code).to.eql(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Response message is present and non-empty', function () {\r",
+                  "    const jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData).to.have.property('message');\r",
+                  "    pm.expect(String(jsonData.message).trim()).to.not.equal('');\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{sessionToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n\"id\": 0,\r\n  \"username\": \"ok123\",\r\n  \"firstName\": \"okay\",\r\n  \"lastName\": \"yes\",\r\n  \"email\": \"okayyes123@gmail.com\",\r\n  \"password\": \"123456789\",\r\n  \"phone\": \"0123456789\",\r\n  \"userStatus\": 0\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{Base_URL}}/user",
+              "host": [
+                "{{Base_URL}}"
+              ],
+              "path": [
+                "user"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Invalid registration",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "let requestBody = {};\r",
+                  "let responseJson = null;\r",
+                  "let responseText = \"\";\r",
+                  "\r",
+                  "pm.test(\"Invalid registration payload has empty firstName and lastName\", function () {\r",
+                  "    pm.expect(function () {\r",
+                  "        requestBody = JSON.parse(pm.request.body ? pm.request.body.raw : \"{}\");\r",
+                  "    }).to.not.throw();\r",
+                  "\r",
+                  "    pm.expect(requestBody).to.have.property(\"firstName\");\r",
+                  "    pm.expect(requestBody).to.have.property(\"lastName\");\r",
+                  "    pm.expect(requestBody.firstName, \"Expected invalid test payload to use an empty firstName\").to.eql(\"\");\r",
+                  "    pm.expect(requestBody.lastName, \"Expected invalid test payload to use an empty lastName\").to.eql(\"\");\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Invalid registration should return a 4xx status\", function () {\r",
+                  "    pm.expect(\r",
+                  "        pm.response.code,\r",
+                  "        \"Invalid registration should not return a success status\"\r",
+                  "    ).to.be.within(400, 499);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response body should not report code 200\", function () {\r",
+                  "    try {\r",
+                  "        responseJson = pm.response.json();\r",
+                  "        pm.expect(responseJson.code, \"Validation bug: response body code should not be 200 for invalid registration\").to.not.eql(200);\r",
+                  "    } catch (e) {\r",
+                  "        pm.expect.fail(\"Expected JSON response body for invalid registration validation check.\");\r",
+                  "    }\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Validation error response should contain a human-readable text message, not an id number\", function () {\r",
+                  "    if (!responseJson) {\r",
+                  "        responseJson = pm.response.json();\r",
+                  "    }\r",
+                  "\r",
+                  "    pm.expect(responseJson).to.have.property(\"message\");\r",
+                  "    pm.expect(responseJson.message, \"Expected validation error message to be a text string\").to.be.a(\"string\");\r",
+                  "    pm.expect(responseJson.message.trim(), \"Expected validation error message to be non-empty\").to.have.length.above(0);\r",
+                  "    pm.expect(\r",
+                  "        responseJson.message,\r",
+                  "        \"Validation bug: response message looks like an id number instead of a descriptive validation message\"\r",
+                  "    ).to.not.match(/^\\d+$/);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"4xx validation response should mention the validation problem\", function () {\r",
+                  "\r",
+                  "    pm.expect(pm.response.code).to.be.within(400, 499);\r",
+                  "\r",
+                  "    const responseText = pm.response.text().toLowerCase();\r",
+                  "\r",
+                  "    pm.expect(responseText).to.match(\r",
+                  "        /first\\s*name|firstname|last\\s*name|lastname|required|bad request|validation/\r",
+                  "    );\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n\"id\": 0,\r\n  \"username\": \"ok123\",\r\n  \"firstName\": \"\",\r\n  \"lastName\": \"\",\r\n  \"email\": \"okayyes123@gmail.com\",\r\n  \"password\": \"123456789\",\r\n  \"phone\": \"0123456789\",\r\n  \"userStatus\": 0\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{Base_URL}}/user",
+              "host": [
+                "{{Base_URL}}"
+              ],
+              "path": [
+                "user"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get sila123 by username",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response time is acceptable', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});",
+                  "",
+                  "pm.test('Response is valid JSON', function () {",
+                  "    pm.expect(function () { JSON.parse(pm.response.text()); }).to.not.throw();",
+                  "});",
+                  "",
+                  "pm.test('Required fields exist', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    ['id', 'username', 'firstName', 'lastName', 'email', 'password', 'phone', 'userStatus'].forEach(function (field) {",
+                  "        pm.expect(jsonData).to.have.property(field);",
+                  "    });",
+                  "});",
+                  "",
+                  "pm.test('Username matches requested username from URL', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    var path = pm.request.url.getPath();",
+                  "    var requestedUsername = path.split('/').pop();",
+                  "    pm.expect(jsonData.username).to.eql(requestedUsername);",
+                  "});",
+                  "",
+                  "pm.test('id is a number', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.id).to.be.a('number');",
+                  "});",
+                  "",
+                  "pm.test('Key string fields are strings', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    ['username', 'firstName', 'lastName', 'email', 'password', 'phone'].forEach(function (field) {",
+                  "        pm.expect(jsonData[field]).to.be.a('string');",
+                  "    });",
+                  "});",
+                  "",
+                  "pm.test('userStatus is a number', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.userStatus).to.be.a('number');",
+                  "});",
+                  "",
+                  "const jsonData = pm.response.json();",
+                  "",
+                  "pm.collectionVariables.set(\"userId\", jsonData.id);",
+                  "pm.collectionVariables.set(\"userName2\", jsonData.username);",
+                  "pm.collectionVariables.set(\"password\", jsonData.password);",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{Base_URL}}/user/sila123",
+              "host": [
+                "{{Base_URL}}"
+              ],
+              "path": [
+                "user",
+                "sila123"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get a user by username",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Response time is acceptable', function () {\r",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Response is valid JSON', function () {\r",
+                  "    pm.expect(function () { JSON.parse(pm.response.text()); }).to.not.throw();\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Required fields exist', function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    ['id', 'username', 'firstName', 'lastName', 'email', 'password', 'phone', 'userStatus'].forEach(function (field) {\r",
+                  "        pm.expect(jsonData).to.have.property(field);\r",
+                  "    });\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Username matches requested username from URL', function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    var path = pm.request.url.getPath();\r",
+                  "    var requestedUsername = path.split('/').pop();\r",
+                  "    pm.expect(jsonData.username).to.eql(requestedUsername);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('id is a number', function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.id).to.be.a('number');\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Key string fields are strings', function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    ['username', 'firstName', 'lastName', 'email', 'password', 'phone'].forEach(function (field) {\r",
+                  "        pm.expect(jsonData[field]).to.be.a('string');\r",
+                  "    });\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('userStatus is a number', function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.userStatus).to.be.a('number');\r",
+                  "});\r",
+                  "\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "packages": {},
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{Base_URL}}/user/{{userName}}",
+              "host": [
+                "{{Base_URL}}"
+              ],
+              "path": [
+                "user",
+                "{{userName}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get ok123 by username",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Response time is acceptable', function () {\r",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Response is valid JSON', function () {\r",
+                  "    pm.expect(function () { JSON.parse(pm.response.text()); }).to.not.throw();\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Required fields exist', function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    ['id', 'username', 'firstName', 'lastName', 'email', 'password', 'phone', 'userStatus'].forEach(function (field) {\r",
+                  "        pm.expect(jsonData).to.have.property(field);\r",
+                  "    });\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Username matches requested username from URL', function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    var path = pm.request.url.getPath();\r",
+                  "    var requestedUsername = path.split('/').pop();\r",
+                  "    pm.expect(jsonData.username).to.eql(requestedUsername);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('id is a number', function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.id).to.be.a('number');\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Key string fields are strings', function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    ['username', 'firstName', 'lastName', 'email', 'password', 'phone'].forEach(function (field) {\r",
+                  "        pm.expect(jsonData[field]).to.be.a('string');\r",
+                  "    });\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('userStatus is a number', function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.userStatus).to.be.a('number');\r",
+                  "});\r",
+                  "\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{Base_URL}}/user/ok123",
+              "host": [
+                "{{Base_URL}}"
+              ],
+              "path": [
+                "user",
+                "ok123"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update a user by the username",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response time is under 1000 ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(1000);",
+                  "});",
+                  "",
+                  "pm.test('Response body is valid JSON', function () {",
+                  "    pm.expect(function () { JSON.parse(pm.response.text()); }).to.not.throw();",
+                  "});",
+                  "",
+                  "pm.test('Update-user response has expected shape and values', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    const requestBody = JSON.parse(pm.request.body ? pm.request.body.raw : '{}');",
+                  "",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    pm.expect(jsonData.code).to.eql(200);",
+                  "    pm.expect(jsonData.type).to.be.a('string').and.to.not.be.empty;",
+                  "    pm.expect(jsonData.message).to.be.a('string').and.to.not.be.empty;",
+                  "    pm.expect(jsonData.message).to.eql(String(requestBody.id));",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\": {{userId}},\r\n    \"username\": \"{{userName2}}\",\r\n    \"firstName\": \"Silia\",\r\n    \"lastName\": \"Mohamed bahaa\",\r\n    \"email\": \"Silakill123@gmail.com\",\r\n    \"password\": \"123456789\",\r\n    \"phone\": \"0123456789\",\r\n    \"userStatus\": 0\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{Base_URL}}/user/sila123",
+              "host": [
+                "{{Base_URL}}"
+              ],
+              "path": [
+                "user",
+                "sila123"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update a user by a wrong username",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// 1. Status code check",
+                  "pm.test(\"Status code is 404\", function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});",
+                  "",
+                  "// 2. Body is valid JSON",
+                  "pm.test('Response body is valid JSON for nonexistent-username update scenario', function () {",
+                  "    pm.expect(function () { JSON.parse(pm.response.text()); }).to.not.throw();",
+                  "});",
+                  "",
+                  "// 3. Sanity check: تأكيد إن الـ negative scenario نفسه مظبوط",
+                  "pm.test('Request targets a username that differs from the username in the payload, indicating a nonexistent-resource negative scenario', function () {",
+                  "    const pathUsername = pm.request.url.path ? pm.request.url.path[pm.request.url.path.length - 1] : '';",
+                  "    const requestBody = JSON.parse(pm.request.body && pm.request.body.raw ? pm.request.body.raw : '{}');",
+                  "    pm.expect(pathUsername, 'Expected the endpoint to target a different username than the payload username for this negative test').to.be.a('string').and.to.not.be.empty;",
+                  "    pm.expect(requestBody.username, 'Expected request body to include a username').to.be.a('string').and.to.not.be.empty;",
+                  "    pm.expect(pathUsername, 'Negative scenario setup is invalid because the endpoint username matches the payload username').to.not.eql(requestBody.username);",
+                  "});",
+                  "",
+                  "// 4. لازم مايرجعش 200",
+                  "pm.test('BUG: updating a nonexistent username must not return HTTP 200 success', function () {",
+                  "    pm.expect(pm.response.code, 'Bug detected: API returned HTTP 200 for updating a nonexistent username').to.not.eql(200);",
+                  "});",
+                  "",
+                  "// 5. لازم يبقى فيه body.code واضح، ومايكونش 200",
+                  "pm.test('BUG: updating a nonexistent username must not return body.code 200 success semantics', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    pm.expect(jsonData, 'Expected response to include a code field').to.have.property('code');",
+                  "    pm.expect(jsonData.code, 'Bug detected: response body.code is 200 for a nonexistent username update').to.not.eql(200);",
+                  "});",
+                  "",
+                  "// 6. الرسالة متضمنش أي إشارة لنجاح التحديث (تم تصحيحها لاستخدام includes بدل eql)",
+                  "pm.test('BUG: success-style response message should not confirm update for a nonexistent username', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    const requestBody = JSON.parse(pm.request.body && pm.request.body.raw ? pm.request.body.raw : '{}');",
+                  "    const message = String(jsonData.message || '');",
+                  "",
+                  "    const referencesId = requestBody.id !== undefined && message.includes(String(requestBody.id));",
+                  "    pm.expect(",
+                  "        referencesId,",
+                  "        'Bug detected: response message references the request id, suggesting a successful update for a nonexistent username'",
+                  "    ).to.equal(false);",
+                  "",
+                  "    const successIndicators = ['updated', 'success', 'logged in user session'];",
+                  "    const hasSuccessWording = successIndicators.some(function (phrase) {",
+                  "        return message.toLowerCase().includes(phrase);",
+                  "    });",
+                  "    pm.expect(",
+                  "        hasSuccessWording,",
+                  "        'Bug detected: response message uses success-style wording for a nonexistent username update'",
+                  "    ).to.equal(false);",
+                  "});",
+                  "",
+                  "// 7. لازم يبقى فيه error payload صريح يوضح إن الطلب فشل",
+                  "pm.test('Response contains an explicit error payload', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    const hasErrorPayload = Boolean(",
+                  "        jsonData && (",
+                  "            jsonData.error ||",
+                  "            jsonData.errorMessage ||",
+                  "            jsonData.errors ||",
+                  "            (typeof jsonData.message === 'string' && /invalid|unauthorized|forbidden|not found|does not exist|error/i.test(jsonData.message))",
+                  "        )",
+                  "    );",
+                  "    pm.expect(hasErrorPayload, 'Expected an explicit error indicator in the response body').to.equal(true);",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\": 0,\r\n    \"username\": \"Mohamed123\",\r\n    \"firstName\": \"Silia\",\r\n    \"lastName\": \"Mohamed bahaa\",\r\n    \"email\": \"Silakill123@gmail.com\",\r\n    \"password\": \"123456789\",\r\n    \"phone\": \"0123456789\",\r\n    \"userStatus\": 0\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{Base_URL}}/user/MohamedBahaa22",
+              "host": [
+                "{{Base_URL}}"
+              ],
+              "path": [
+                "user",
+                "MohamedBahaa22"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Login and Logout",
+      "item": [
+        {
+          "name": "valid login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Response time is reasonable', function () {\r",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Response is valid JSON', function () {\r",
+                  "    pm.expect(function () { pm.response.json(); }).to.not.throw();\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Response has code, type, and message fields', function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData).to.be.an('object');\r",
+                  "    pm.expect(jsonData).to.have.property('code');\r",
+                  "    pm.expect(jsonData).to.have.property('type');\r",
+                  "    pm.expect(jsonData).to.have.property('message');\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Response code field equals 200', function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.code).to.eql(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Message contains logged-in session token', function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.message).to.be.a('string');\r",
+                  "    pm.expect(jsonData.message).to.match(/logged in user session:\\s*\\S+/i);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Content-Type is JSON if present', function () {\r",
+                  "    var contentType = pm.response.headers.get('Content-Type');\r",
+                  "    if (contentType) {\r",
+                  "        pm.expect(contentType.toLowerCase()).to.include('application/json');\r",
+                  "    }\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Store session token in collection variables', function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    var match = String(jsonData.message || '').match(/logged in user session:\\s*(\\S+)/i);\r",
+                  "    pm.expect(match, 'session token should be present in message').to.not.be.null;\r",
+                  "    pm.collectionVariables.set('sessionToken', match[1]);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{Base_URL}}/user/login?username={{userName2}}&password={{password}}",
+              "host": [
+                "{{Base_URL}}"
+              ],
+              "path": [
+                "user",
+                "login"
+              ],
+              "query": [
+                {
+                  "key": "username",
+                  "value": "{{userName2}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{password}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "logout",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response time is under 2000ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});",
+                  "",
+                  "pm.test('Content-Type is JSON when header is present', function () {",
+                  "    const contentType = pm.response.headers.get('Content-Type');",
+                  "    if (contentType) {",
+                  "        pm.expect(contentType.toLowerCase()).to.include('application/json');",
+                  "    } else {",
+                  "        pm.expect(true).to.be.true;",
+                  "    }",
+                  "});",
+                  "",
+                  "pm.test('Response body is valid JSON', function () {",
+                  "    pm.expect(function () { pm.response.json(); }).to.not.throw();",
+                  "});",
+                  "",
+                  "pm.test('Response has expected logout fields', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    pm.expect(jsonData).to.have.property('code');",
+                  "    pm.expect(jsonData).to.have.property('type');",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "});",
+                  "",
+                  "pm.test('Logout response fields have expected types', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.code).to.be.a('number');",
+                  "    pm.expect(jsonData.type).to.be.a('string');",
+                  "    pm.expect(jsonData.message).to.be.a('string');",
+                  "});",
+                  "",
+                  "pm.test('Logout response matches expected values', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.code).to.eql(200);",
+                  "    pm.expect(jsonData.type).to.eql('unknown');",
+                  "    pm.expect(jsonData.message).to.eql('ok');",
+                  "});",
+                  "",
+                  "pm.test('Logout endpoint returns success payload shape', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(Object.keys(jsonData).sort()).to.eql(['code', 'message', 'type']);",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{Base_URL}}/user/logout",
+              "host": [
+                "{{Base_URL}}"
+              ],
+              "path": [
+                "user",
+                "logout"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Invalid login with a wrong password",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// 1. Content-Type check\r",
+                  "pm.test('Response is JSON', function () {\r",
+                  "    pm.response.to.have.header('Content-Type');\r",
+                  "    pm.expect(pm.response.headers.get('Content-Type') || '').to.include('application/json');\r",
+                  "});\r",
+                  "\r",
+                  "// 2. Parse body\r",
+                  "let jsonData;\r",
+                  "pm.test('Response body can be parsed as JSON', function () {\r",
+                  "    jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData).to.be.an('object'); // ملحوظة: لو الـ API ممكن يرجّع array، عدّل الشرط\r",
+                  "});\r",
+                  "\r",
+                  "// 3. Status code check صريح - عدّل الرقم حسب توقعك الفعلي (401 غالبًا، ممكن تكون 403)\r",
+                  "pm.test('Status code indicates unauthorized (4xx)', function () {\r",
+                  "    pm.expect(pm.response.code).to.be.within(400, 499);\r",
+                  "});\r",
+                  "\r",
+                  "// 4. مفيش نجاح فعلي (status 200)\r",
+                  "pm.test('Invalid login must not return 200', function () {\r",
+                  "    pm.expect(pm.response.code, 'Bug: invalid credentials returned 200 OK').to.not.equal(200);\r",
+                  "});\r",
+                  "\r",
+                  "// 5. مفيش رسالة تدل على نجاح تسجيل الدخول (نص كتحقق إضافي، مش أساسي)\r",
+                  "pm.test('Invalid login must not contain a success/session message', function () {\r",
+                  "    const message = String((jsonData && jsonData.message) || '').toLowerCase();\r",
+                  "    const successIndicators = ['logged in user session', 'login successful', 'session created'];\r",
+                  "    const hasSuccessMessage = successIndicators.some(function (phrase) {\r",
+                  "        return message.includes(phrase);\r",
+                  "    });\r",
+                  "    pm.expect(hasSuccessMessage, 'Bug: response message suggests a successful login/session').to.equal(false);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Invalid login must not return a session token or session id', function () {\r",
+                  "    // تحقق من الـ properties المباشرة\r",
+                  "    pm.expect(jsonData, 'Bug: token field present').to.not.have.property('token');\r",
+                  "    pm.expect(jsonData, 'Bug: session field present').to.not.have.property('session');\r",
+                  "    pm.expect(jsonData, 'Bug: sessionId field present').to.not.have.property('sessionId');\r",
+                  "    pm.expect(jsonData, 'Bug: session_id field present').to.not.have.property('session_id');\r",
+                  "\r",
+                  "    // تحقق كمان من إن مفيش session id متسرب جوه أي نص (زي الـ message)\r",
+                  "    const fullBody = JSON.stringify(jsonData || {});\r",
+                  "    const hasEmbeddedSessionId = /session[:=]\\s*\\d{6,}/i.test(fullBody);\r",
+                  "    pm.expect(hasEmbeddedSessionId, 'Bug: session identifier leaked inside a text field').to.equal(false);\r",
+                  "});\r",
+                  "\r",
+                  "// 7. لازم يبقى فيه payload يوضح إنه خطأ\r",
+                  "pm.test('Response contains an explicit error payload', function () {\r",
+                  "    const hasErrorPayload = Boolean(\r",
+                  "        jsonData && (\r",
+                  "            jsonData.error ||\r",
+                  "            jsonData.errorMessage ||\r",
+                  "            jsonData.errors ||\r",
+                  "            (typeof jsonData.message === 'string' && /invalid|unauthorized|forbidden|error/i.test(jsonData.message))\r",
+                  "        )\r",
+                  "    );\r",
+                  "    pm.expect(hasErrorPayload, 'Expected an explicit error indicator in the response body').to.equal(true);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{Base_URL}}/user/login?username={{userName2}}&password=123456789000",
+              "host": [
+                "{{Base_URL}}"
+              ],
+              "path": [
+                "user",
+                "login"
+              ],
+              "query": [
+                {
+                  "key": "username",
+                  "value": "{{userName2}}"
+                },
+                {
+                  "key": "password",
+                  "value": "123456789000"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Invalid login with a wrong username",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// 1. Content-Type check\r",
+                  "pm.test('Response is JSON', function () {\r",
+                  "    pm.response.to.have.header('Content-Type');\r",
+                  "    pm.expect(pm.response.headers.get('Content-Type') || '').to.include('application/json');\r",
+                  "});\r",
+                  "\r",
+                  "// 2. Parse body\r",
+                  "let jsonData;\r",
+                  "pm.test('Response body can be parsed as JSON', function () {\r",
+                  "    jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData).to.be.an('object'); // ملحوظة: لو الـ API ممكن يرجّع array، عدّل الشرط\r",
+                  "});\r",
+                  "\r",
+                  "// 3. Status code check صريح - عدّل الرقم حسب توقعك الفعلي (401 غالبًا، ممكن تكون 403)\r",
+                  "pm.test('Status code indicates unauthorized (4xx)', function () {\r",
+                  "    pm.expect(pm.response.code).to.be.within(400, 499);\r",
+                  "});\r",
+                  "\r",
+                  "// 4. مفيش نجاح فعلي (status 200)\r",
+                  "pm.test('Invalid login must not return 200', function () {\r",
+                  "    pm.expect(pm.response.code, 'Bug: invalid credentials returned 200 OK').to.not.equal(200);\r",
+                  "});\r",
+                  "\r",
+                  "// 5. مفيش رسالة تدل على نجاح تسجيل الدخول (نص كتحقق إضافي، مش أساسي)\r",
+                  "pm.test('Invalid login must not contain a success/session message', function () {\r",
+                  "    const message = String((jsonData && jsonData.message) || '').toLowerCase();\r",
+                  "    const successIndicators = ['logged in user session', 'login successful', 'session created'];\r",
+                  "    const hasSuccessMessage = successIndicators.some(function (phrase) {\r",
+                  "        return message.includes(phrase);\r",
+                  "    });\r",
+                  "    pm.expect(hasSuccessMessage, 'Bug: response message suggests a successful login/session').to.equal(false);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Invalid login must not return a session token or session id', function () {\r",
+                  "    // تحقق من الـ properties المباشرة\r",
+                  "    pm.expect(jsonData, 'Bug: token field present').to.not.have.property('token');\r",
+                  "    pm.expect(jsonData, 'Bug: session field present').to.not.have.property('session');\r",
+                  "    pm.expect(jsonData, 'Bug: sessionId field present').to.not.have.property('sessionId');\r",
+                  "    pm.expect(jsonData, 'Bug: session_id field present').to.not.have.property('session_id');\r",
+                  "\r",
+                  "    // تحقق كمان من إن مفيش session id متسرب جوه أي نص (زي الـ message)\r",
+                  "    const fullBody = JSON.stringify(jsonData || {});\r",
+                  "    const hasEmbeddedSessionId = /session[:=]\\s*\\d{6,}/i.test(fullBody);\r",
+                  "    pm.expect(hasEmbeddedSessionId, 'Bug: session identifier leaked inside a text field').to.equal(false);\r",
+                  "});\r",
+                  "\r",
+                  "// 7. لازم يبقى فيه payload يوضح إنه خطأ\r",
+                  "pm.test('Response contains an explicit error payload', function () {\r",
+                  "    const hasErrorPayload = Boolean(\r",
+                  "        jsonData && (\r",
+                  "            jsonData.error ||\r",
+                  "            jsonData.errorMessage ||\r",
+                  "            jsonData.errors ||\r",
+                  "            (typeof jsonData.message === 'string' && /invalid|unauthorized|forbidden|error/i.test(jsonData.message))\r",
+                  "        )\r",
+                  "    );\r",
+                  "    pm.expect(hasErrorPayload, 'Expected an explicit error indicator in the response body').to.equal(true);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{Base_URL}}/user/login?username=silaaa123&password={{password}}",
+              "host": [
+                "{{Base_URL}}"
+              ],
+              "path": [
+                "user",
+                "login"
+              ],
+              "query": [
+                {
+                  "key": "username",
+                  "value": "silaaa123"
+                },
+                {
+                  "key": "password",
+                  "value": "{{password}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Pets orders",
+      "item": [
+        {
+          "name": "get the Inventory",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Response time is reasonable', function () {\r",
+                  "    pm.expect(pm.response.responseTime, 'response time').to.be.below(2000);\r",
+                  "});\r",
+                  "\r",
+                  "// Parse once, up front, and record whether it succeeded.\r",
+                  "let inventory = null;\r",
+                  "let parseError = null;\r",
+                  "try {\r",
+                  "    inventory = pm.response.json();\r",
+                  "} catch (err) {\r",
+                  "    parseError = err;\r",
+                  "}\r",
+                  "\r",
+                  "pm.test('Response is valid JSON', function () {\r",
+                  "    if (parseError) {\r",
+                  "        throw new Error(`Response body is not valid JSON: ${parseError.message}`);\r",
+                  "    }\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Response is a valid JSON object', function () {\r",
+                  "    pm.expect(inventory, 'response should be parseable').to.not.equal(null);\r",
+                  "    pm.expect(inventory).to.be.an('object');\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Inventory object is not empty', function () {\r",
+                  "    if (!inventory) return pm.expect.fail('No inventory object to check (parse failed earlier)');\r",
+                  "    pm.expect(Object.keys(inventory).length, 'inventory should contain at least one status').to.be.above(0);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Every inventory count is a number', function () {\r",
+                  "    if (!inventory) return pm.expect.fail('No inventory object to check (parse failed earlier)');\r",
+                  "    Object.entries(inventory).forEach(([status, count]) => {\r",
+                  "        pm.expect(count, `count for status \"${status}\" should be a number`).to.be.a('number');\r",
+                  "        pm.expect(Number.isFinite(count), `count for status \"${status}\" should be finite`).to.equal(true);\r",
+                  "    });\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Every inventory count is non-negative', function () {\r",
+                  "    if (!inventory) return pm.expect.fail('No inventory object to check (parse failed earlier)');\r",
+                  "    Object.entries(inventory).forEach(([status, count]) => {\r",
+                  "        pm.expect(count, `count for status \"${status}\" should be non-negative`).to.be.at.least(0);\r",
+                  "    });\r",
+                  "});\r",
+                  "\r",
+                  "(function logUnusualStatusKeys() {\r",
+                  "    if (!inventory) return;\r",
+                  "    const commonStatuses = ['available', 'pending', 'sold'];\r",
+                  "    const unusualStatuses = Object.keys(inventory).filter((status) => {\r",
+                  "        const normalized = String(status).trim().toLowerCase();\r",
+                  "        return !commonStatuses.includes(normalized);\r",
+                  "    });\r",
+                  "\r",
+                  "    if (unusualStatuses.length) {\r",
+                  "        console.warn('Unusual inventory status keys detected:', unusualStatuses);\r",
+                  "    }\r",
+                  "})();"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{Base_URL}}/store/inventory",
+              "host": [
+                "{{Base_URL}}"
+              ],
+              "path": [
+                "store",
+                "inventory"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create a new order",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const rawResponse = pm.response.text();",
+                  "let jsonData;",
+                  "let parseError = null;",
+                  "",
+                  "pm.test(\"Response is valid JSON\", function () {",
+                  "    try {",
+                  "        jsonData = pm.response.json();",
+                  "    } catch (err) {",
+                  "        parseError = err;",
+                  "    }",
+                  "",
+                  "    pm.expect(parseError, parseError ? `Expected valid JSON but parsing failed: ${parseError.message}` : undefined).to.equal(null);",
+                  "});",
+                  "",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response time is reasonable\", function () {",
+                  "    pm.expect(pm.response.responseTime, \"Expected response time to be below 2000ms\").to.be.below(2000);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has required fields\", function () {",
+                  "    pm.expect(parseError, \"Cannot validate required fields because response JSON parsing failed\").to.equal(null);",
+                  "    pm.expect(jsonData).to.be.an(\"object\");",
+                  "    pm.expect(jsonData).to.have.property(\"id\");",
+                  "    pm.expect(jsonData).to.have.property(\"petId\");",
+                  "    pm.expect(jsonData).to.have.property(\"quantity\");",
+                  "    pm.expect(jsonData).to.have.property(\"shipDate\");",
+                  "    pm.expect(jsonData).to.have.property(\"status\");",
+                  "    pm.expect(jsonData).to.have.property(\"complete\");",
+                  "});",
+                  "",
+                  "pm.test(\"Response field types are correct\", function () {",
+                  "    pm.expect(parseError, \"Cannot validate field types because response JSON parsing failed\").to.equal(null);",
+                  "    pm.expect(jsonData.id, \"id should be a number\").to.be.a(\"number\");",
+                  "    pm.expect(jsonData.petId, \"petId should be a number\").to.be.a(\"number\");",
+                  "    pm.expect(jsonData.quantity, \"quantity should be a number\").to.be.a(\"number\");",
+                  "    pm.expect(jsonData.shipDate, \"shipDate should be a string\").to.be.a(\"string\");",
+                  "    pm.expect(jsonData.status, \"status should be a string\").to.be.a(\"string\");",
+                  "    pm.expect(jsonData.complete, \"complete should be a boolean\").to.be.a(\"boolean\");",
+                  "});",
+                  "",
+                  "pm.test(\"Response values match request body\", function () {",
+                  "    pm.expect(parseError, \"Cannot validate response values because response JSON parsing failed\").to.equal(null);",
+                  "    pm.expect(jsonData.status, \"status should match request body\").to.eql(\"placed\");",
+                  "    pm.expect(jsonData.quantity, \"quantity should match request body\").to.eql(2);",
+                  "    pm.expect(jsonData.complete, \"complete should match request body\").to.eql(true);",
+                  "});",
+                  "",
+                  "pm.test(\"Response id is present and non-empty\", function () {",
+                  "    pm.expect(parseError, \"Cannot validate id because response JSON parsing failed\").to.equal(null);",
+                  "    pm.expect(jsonData.id).to.not.equal(null);",
+                  "    pm.expect(jsonData.id).to.not.equal(undefined);",
+                  "    pm.expect(String(jsonData.id), \"id should not be empty\").to.have.length.above(0);",
+                  "});",
+                  "",
+                  "const match = rawResponse.match(/\"id\"\\s*:\\s*(\\d+)/);",
+                  "",
+                  "pm.test(\"orderId is saved as a collection variable\", function () {",
+                  "    pm.expect(match, \"Could not extract orderId from response body\").to.not.equal(null);",
+                  "",
+                  "    if (match) {",
+                  "        const orderId = match[1];",
+                  "        pm.collectionVariables.set(\"orderId\", orderId);",
+                  "        pm.expect(pm.collectionVariables.get(\"orderId\"), \"orderId collection variable should be set\").to.eql(orderId);",
+                  "    }",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"id\": 0,\r\n  \"petId\": {{randomPetId}},\r\n  \"quantity\": 2,\r\n  \"shipDate\": \"2026-08-13T04:14:02.699Z\",\r\n  \"status\": \"placed\",\r\n  \"complete\": true\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{Base_URL}}/store/order",
+              "host": [
+                "{{Base_URL}}"
+              ],
+              "path": [
+                "store",
+                "order"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get an order by the order ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Content-Type includes JSON when header is present\", function () {",
+                  "    const contentType = pm.response.headers.get(\"Content-Type\");",
+                  "    if (contentType) {",
+                  "        pm.expect(contentType.toLowerCase()).to.include(\"json\");",
+                  "    } else {",
+                  "        pm.expect(true).to.be.true;",
+                  "    }",
+                  "});",
+                  "",
+                  "pm.test(\"Response time is reasonable\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});",
+                  "",
+                  "pm.test(\"Response body is valid JSON\", function () {",
+                  "    pm.expect(function () {",
+                  "        pm.response.json();",
+                  "    }).to.not.throw();",
+                  "});",
+                  "",
+                  "pm.test(\"Response has required fields\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.be.an(\"object\");",
+                  "    pm.expect(jsonData).to.have.property(\"id\");",
+                  "    pm.expect(jsonData).to.have.property(\"petId\");",
+                  "    pm.expect(jsonData).to.have.property(\"quantity\");",
+                  "    pm.expect(jsonData).to.have.property(\"shipDate\");",
+                  "    pm.expect(jsonData).to.have.property(\"status\");",
+                  "    pm.expect(jsonData).to.have.property(\"complete\");",
+                  "});",
+                  "",
+                  "pm.test(\"Response fields have correct types\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.id).to.be.a(\"number\");",
+                  "    pm.expect(jsonData.petId).to.be.a(\"number\");",
+                  "    pm.expect(jsonData.quantity).to.be.a(\"number\");",
+                  "    pm.expect(jsonData.shipDate).to.be.a(\"string\");",
+                  "    pm.expect(jsonData.status).to.be.a(\"string\");",
+                  "    pm.expect(jsonData.complete).to.be.a(\"boolean\");",
+                  "});",
+                  "",
+                  "pm.test(\"Order status is an expected value\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.status).to.be.oneOf([\"placed\", \"approved\", \"delivered\"]);",
+                  "});",
+                  "",
+                  "pm.test(\"Quantity is above zero\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.quantity).to.be.above(0);",
+                  "});",
+                  "",
+                  "pm.test(\"Ship date is a non-empty string\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.shipDate).to.be.a(\"string\").and.to.have.length.above(0);",
+                  "});",
+                  "",
+                  "pm.test(\"Complete is boolean\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.complete).to.be.a(\"boolean\");",
+                  "});",
+                  "",
+                  "pm.test(\"Order id matches requested orderId variable when available\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    const requestedOrderId = pm.variables.get(\"orderId\");",
+                  "    if (requestedOrderId !== undefined && requestedOrderId !== null && requestedOrderId !== \"\") {",
+                  "        pm.expect(String(jsonData.id)).to.eql(String(requestedOrderId));",
+                  "    } else {",
+                  "        pm.expect(jsonData.id).to.exist;",
+                  "    }",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{Base_URL}}/store/order/{{orderId}}",
+              "host": [
+                "{{Base_URL}}"
+              ],
+              "path": [
+                "store",
+                "order",
+                "{{orderId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get an order by non existing order ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 404', function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});",
+                  "",
+                  "pm.test('Response is valid JSON object', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "});",
+                  "",
+                  "pm.test('Error payload has expected shape', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('code');",
+                  "    pm.expect(jsonData).to.have.property('type');",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "    pm.expect(jsonData.code).to.be.a('number');",
+                  "    pm.expect(jsonData.type).to.be.a('string');",
+                  "    pm.expect(jsonData.message).to.be.a('string').and.not.empty;",
+                  "});",
+                  "",
+                  "pm.test('Error payload has expected values when present', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    if (Object.prototype.hasOwnProperty.call(jsonData, 'code')) {",
+                  "        pm.expect(jsonData.code).to.eql(1);",
+                  "    }",
+                  "    if (Object.prototype.hasOwnProperty.call(jsonData, 'type')) {",
+                  "        pm.expect(jsonData.type.toLowerCase()).to.eql('error');",
+                  "    }",
+                  "    if (Object.prototype.hasOwnProperty.call(jsonData, 'message')) {",
+                  "        pm.expect(jsonData.message).to.eql('Order not found');",
+                  "    }",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{Base_URL}}/store/order/00000000",
+              "host": [
+                "{{Base_URL}}"
+              ],
+              "path": [
+                "store",
+                "order",
+                "00000000"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete an order",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const requestOrderId = pm.variables.get('orderId');",
+                  "",
+                  "if (requestOrderId) {",
+                  "    pm.collectionVariables.set('deletedOrderId', String(requestOrderId));",
+                  "} else {",
+                  "    let responseJson;",
+                  "    try {",
+                  "        responseJson = pm.response.json();",
+                  "    } catch (e) {}",
+                  "    if (responseJson && responseJson.message) {",
+                  "        pm.collectionVariables.set('deletedOrderId', String(responseJson.message));",
+                  "    }",
+                  "}",
+                  "",
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response time is reasonable', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});",
+                  "",
+                  "pm.test('Response body is valid JSON', function () {",
+                  "    pm.expect(function () { pm.response.json(); }).to.not.throw();",
+                  "});",
+                  "",
+                  "pm.test('Response body indicates successful delete', function () {",
+                  "    const body = pm.response.json();",
+                  "    pm.expect(body).to.be.an('object');",
+                  "    pm.expect(body.code).to.eql(200);",
+                  "    pm.expect(body.message).to.be.a('string').and.to.have.length.above(0);",
+                  "",
+                  "    const orderId = pm.variables.get('orderId');",
+                  "    if (orderId) {",
+                  "        pm.expect(body.message).to.eql(String(orderId));",
+                  "    }",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{Base_URL}}/store/order/{{orderId}}",
+              "host": [
+                "{{Base_URL}}"
+              ],
+              "path": [
+                "store",
+                "order",
+                "{{orderId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get a deleted order",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 404', function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});",
+                  "",
+                  "pm.test('Response time is reasonable', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});",
+                  "",
+                  "pm.test('Response is valid JSON', function () {",
+                  "    pm.expect(function () { pm.response.json(); }).to.not.throw();",
+                  "});",
+                  "",
+                  "pm.test('Response body has expected keys', function () {",
+                  "    const body = pm.response.json();",
+                  "    pm.expect(body).to.have.all.keys('code', 'type', 'message');",
+                  "});",
+                  "",
+                  "pm.test('Response body has expected values', function () {",
+                  "    const body = pm.response.json();",
+                  "    pm.expect(body.code).to.eql(1);",
+                  "    pm.expect(body.type).to.eql('error');",
+                  "    pm.expect(body.message).to.eql('Order not found');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{Base_URL}}/store/order/{{deletedOrderId}}",
+              "host": [
+                "{{Base_URL}}"
+              ],
+              "path": [
+                "store",
+                "order",
+                "{{deletedOrderId}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Pets management",
+      "item": [
+        {
+          "name": "Add a pet",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "let responseJson = null;\r",
+                  "\r",
+                  "pm.test(\"Status code is 200 or 201\", function () {\r",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response time is acceptable\", function () {\r",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response Content-Type is JSON\", function () {\r",
+                  "    const contentType = pm.response.headers.get(\"Content-Type\");\r",
+                  "\r",
+                  "    pm.expect(contentType, \"Content-Type header is missing\").to.exist;\r",
+                  "    pm.expect(contentType.toLowerCase())\r",
+                  "        .to.include(\"application/json\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response is valid JSON\", function () {\r",
+                  "    try {\r",
+                  "        responseJson = pm.response.json();\r",
+                  "        pm.expect(responseJson).to.be.an(\"object\");\r",
+                  "    } catch (error) {\r",
+                  "        pm.expect.fail(\"Response is not valid JSON\");\r",
+                  "    }\r",
+                  "});\r",
+                  "\r",
+                  "if (responseJson) {\r",
+                  "\r",
+                  "    pm.test(\"Response body has required fields\", function () {\r",
+                  "        pm.expect(responseJson).to.have.property(\"id\");\r",
+                  "        pm.expect(responseJson.id).to.be.a(\"number\");\r",
+                  "\r",
+                  "        pm.expect(responseJson).to.have.property(\"name\");\r",
+                  "        pm.expect(responseJson).to.have.property(\"photoUrls\");\r",
+                  "        pm.expect(responseJson).to.have.property(\"status\");\r",
+                  "    });\r",
+                  "\r",
+                  "    pm.test(\"photoUrls is an array\", function () {\r",
+                  "        pm.expect(responseJson.photoUrls).to.be.an(\"array\");\r",
+                  "    });\r",
+                  "\r",
+                  "    pm.test(\"Returned name and status match request body\", function () {\r",
+                  "        const requestBody = JSON.parse(pm.request.body.raw || \"{}\");\r",
+                  "\r",
+                  "        pm.expect(responseJson.name).to.eql(requestBody.name);\r",
+                  "        pm.expect(responseJson.status).to.eql(requestBody.status);\r",
+                  "    });\r",
+                  "\r",
+                  "    pm.test(\"petId is saved as collection variable\", function () {\r",
+                  "        pm.collectionVariables.set(\r",
+                  "            \"petId\",\r",
+                  "            String(responseJson.id)\r",
+                  "        );\r",
+                  "\r",
+                  "        pm.expect(pm.collectionVariables.get(\"petId\"))\r",
+                  "            .to.eql(String(responseJson.id));\r",
+                  "    });\r",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{sessionToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"id\": 55,\r\n  \"category\": {\r\n    \"id\": 0,\r\n    \"name\": \"cats\"\r\n  },\r\n  \"name\": \"posy\",\r\n  \"photoUrls\": [\r\n    \"NA\"\r\n  ],\r\n  \"tags\": [\r\n    {\r\n      \"id\": 0,\r\n      \"name\": \"pets\"\r\n    }\r\n  ],\r\n  \"status\": \"available\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{Base_URL}}/pet",
+              "host": [
+                "{{Base_URL}}"
+              ],
+              "path": [
+                "pet"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Find a pet by ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Response time is under 1000ms', function () {\r",
+                  "    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Response is valid JSON', function () {\r",
+                  "    pm.response.to.be.json;\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Pet response has required top-level fields', function () {\r",
+                  "    const jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData).to.have.property('id');\r",
+                  "    pm.expect(jsonData).to.have.property('category');\r",
+                  "    pm.expect(jsonData).to.have.property('name');\r",
+                  "    pm.expect(jsonData).to.have.property('photoUrls');\r",
+                  "    pm.expect(jsonData).to.have.property('tags');\r",
+                  "    pm.expect(jsonData).to.have.property('status');\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Pet fields have expected types', function () {\r",
+                  "    const jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.id).to.be.a('number');\r",
+                  "    pm.expect(jsonData.category).to.be.an('object');\r",
+                  "    pm.expect(jsonData.category.id).to.be.a('number');\r",
+                  "    pm.expect(jsonData.category.name).to.be.a('string');\r",
+                  "    pm.expect(jsonData.name).to.be.a('string');\r",
+                  "    pm.expect(jsonData.photoUrls).to.be.an('array');\r",
+                  "    pm.expect(jsonData.tags).to.be.an('array');\r",
+                  "    pm.expect(jsonData.status).to.be.a('string');\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Pet ID matches requested resource', function () {\r",
+                  "    const jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.id).to.eql(55);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Pet name is present and non-empty', function () {\r",
+                  "    const jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.name.trim()).to.not.eql('');\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Category object contains expected fields', function () {\r",
+                  "    const jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.category).to.have.property('id');\r",
+                  "    pm.expect(jsonData.category).to.have.property('name');\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('photoUrls contains at least one entry', function () {\r",
+                  "    const jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.photoUrls.length).to.be.above(0);\r",
+                  "    jsonData.photoUrls.forEach((url) => pm.expect(url).to.be.a('string'));\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Tags contain valid objects when present', function () {\r",
+                  "    const jsonData = pm.response.json();\r",
+                  "    jsonData.tags.forEach((tag) => {\r",
+                  "        pm.expect(tag).to.be.an('object');\r",
+                  "        pm.expect(tag).to.have.property('id');\r",
+                  "        pm.expect(tag).to.have.property('name');\r",
+                  "        pm.expect(tag.id).to.be.a('number');\r",
+                  "        pm.expect(tag.name).to.be.a('string');\r",
+                  "    });\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Pet status is one of the allowed values', function () {\r",
+                  "    const jsonData = pm.response.json();\r",
+                  "    pm.expect(['available', 'pending', 'sold']).to.include(jsonData.status);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Current pet business values match expected response', function () {\r",
+                  "    const jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.category.name).to.eql('cats');\r",
+                  "    pm.expect(jsonData.status).to.eql('available');\r",
+                  "    pm.expect(jsonData.tags[0].name).to.eql('pets');\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{Base_URL}}/pet/55",
+              "host": [
+                "{{Base_URL}}"
+              ],
+              "path": [
+                "pet",
+                "55"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Find a pet by a wrong ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 404', function () {\r",
+                  "    pm.response.to.have.status(404);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Response time is acceptable', function () {\r",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Response Content-Type is JSON', function () {\r",
+                  "    const contentType = pm.response.headers.get('Content-Type');\r",
+                  "\r",
+                  "    pm.expect(contentType).to.exist;\r",
+                  "    pm.expect(contentType.toLowerCase()).to.include('application/json');\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Response body indicates pet was not found', function () {\r",
+                  "    const jsonData = pm.response.json();\r",
+                  "\r",
+                  "    pm.expect(jsonData).to.be.an('object');\r",
+                  "\r",
+                  "    pm.expect(jsonData).to.have.property('code');\r",
+                  "    pm.expect(jsonData.code).to.eql(1);\r",
+                  "\r",
+                  "    pm.expect(jsonData).to.have.property('type');\r",
+                  "    pm.expect(jsonData.type).to.eql('error');\r",
+                  "\r",
+                  "    pm.expect(jsonData).to.have.property('message');\r",
+                  "    pm.expect(jsonData.message).to.eql('Pet not found');\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{Base_URL}}/pet/1000000000000",
+              "host": [
+                "{{Base_URL}}"
+              ],
+              "path": [
+                "pet",
+                "1000000000000"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Find a pet by status",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response time is under 2000ms\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});",
+                  "",
+                  "let pets;",
+                  "",
+                  "pm.test(\"Response body is valid JSON\", function () {",
+                  "    pets = pm.response.json();",
+                  "    pm.expect(pets).to.be.an(\"array\");",
+                  "});",
+                  "",
+                  "const statusParam = pm.request.url.query",
+                  "    .filter(param => param.key === \"status\" && !param.disabled)",
+                  "    .map(param => param.value)[0];",
+                  "",
+                  "pm.test(\"Status query parameter is present\", function () {",
+                  "    pm.expect(statusParam).to.be.a(\"string\").and.not.empty;",
+                  "});",
+                  "",
+                  "if (Array.isArray(pets)) {",
+                  "",
+                  "    pm.test(\"Every pet has required fields\", function () {",
+                  "        pets.forEach(pet => {",
+                  "            pm.expect(pet).to.be.an(\"object\");",
+                  "",
+                  "            pm.expect(pet).to.have.property(\"id\");",
+                  "            pm.expect(pet.id).to.be.a(\"number\");",
+                  "",
+                  "            pm.expect(pet).to.have.property(\"name\");",
+                  "            pm.expect(pet.name).to.be.a(\"string\");",
+                  "",
+                  "            pm.expect(pet).to.have.property(\"photoUrls\");",
+                  "            pm.expect(pet.photoUrls).to.be.an(\"array\");",
+                  "",
+                  "            pm.expect(pet).to.have.property(\"status\");",
+                  "        });",
+                  "    });",
+                  "",
+                  "    pm.test(\"Every returned pet matches requested status\", function () {",
+                  "        pets.forEach(pet => {",
+                  "            pm.expect(pet.status).to.eql(statusParam);",
+                  "        });",
+                  "    });",
+                  "",
+                  "   const rawResponse = pm.response.text();",
+                  "",
+                  "const match = rawResponse.match(/\"id\"\\s*:\\s*(\\d+)/);",
+                  "",
+                  "if (match) {",
+                  "    const randomPetId = match[1];",
+                  "",
+                  "    pm.collectionVariables.set(\"randomPetId\", randomPetId);",
+                  "    console.log ()",
+                  "}",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{Base_URL}}/pet/findByStatus?status=pending",
+              "host": [
+                "{{Base_URL}}"
+              ],
+              "path": [
+                "pet",
+                "findByStatus"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "available",
+                  "disabled": true
+                },
+                {
+                  "key": "status",
+                  "value": "pending"
+                },
+                {
+                  "key": "status",
+                  "value": "sold",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Find a pet by ID Copy",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Response time is under 1000ms', function () {\r",
+                  "    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Response is valid JSON', function () {\r",
+                  "    pm.response.to.be.json;\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Pet response has required top-level fields', function () {\r",
+                  "    const jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData).to.have.property('id');\r",
+                  "    pm.expect(jsonData).to.have.property('category');\r",
+                  "    pm.expect(jsonData).to.have.property('name');\r",
+                  "    pm.expect(jsonData).to.have.property('photoUrls');\r",
+                  "    pm.expect(jsonData).to.have.property('tags');\r",
+                  "    pm.expect(jsonData).to.have.property('status');\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Pet fields have expected types', function () {\r",
+                  "    const jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.id).to.be.a('number');\r",
+                  "    pm.expect(jsonData.category).to.be.an('object');\r",
+                  "    pm.expect(jsonData.category.id).to.be.a('number');\r",
+                  "    pm.expect(jsonData.category.name).to.be.a('string');\r",
+                  "    pm.expect(jsonData.name).to.be.a('string');\r",
+                  "    pm.expect(jsonData.photoUrls).to.be.an('array');\r",
+                  "    pm.expect(jsonData.tags).to.be.an('array');\r",
+                  "    pm.expect(jsonData.status).to.be.a('string');\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response pet ID matches request pet ID\", function () {\r",
+                  "    const requestPetId = Number(pm.collectionVariables.get(\"randomPetId\"));\r",
+                  "    const responsePetId = pm.response.json().id;\r",
+                  "\r",
+                  "    pm.expect(responsePetId).to.eql(requestPetId);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Pet name is present and non-empty', function () {\r",
+                  "    const jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.name.trim()).to.not.eql('');\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Category object contains expected fields', function () {\r",
+                  "    const jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.category).to.have.property('id');\r",
+                  "    pm.expect(jsonData.category).to.have.property('name');\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('photoUrls contains at least one entry', function () {\r",
+                  "    const jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.photoUrls.length).to.be.above(0);\r",
+                  "    jsonData.photoUrls.forEach((url) => pm.expect(url).to.be.a('string'));\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Tags contain valid objects when present', function () {\r",
+                  "    const jsonData = pm.response.json();\r",
+                  "    jsonData.tags.forEach((tag) => {\r",
+                  "        pm.expect(tag).to.be.an('object');\r",
+                  "        pm.expect(tag).to.have.property('id');\r",
+                  "        pm.expect(tag).to.have.property('name');\r",
+                  "        pm.expect(tag.id).to.be.a('number');\r",
+                  "        pm.expect(tag.name).to.be.a('string');\r",
+                  "    });\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Pet status is one of the allowed values', function () {\r",
+                  "    const jsonData = pm.response.json();\r",
+                  "    pm.expect(['available', 'pending', 'sold']).to.include(jsonData.status);\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{Base_URL}}/pet/{{randomPetId}}",
+              "host": [
+                "{{Base_URL}}"
+              ],
+              "path": [
+                "pet",
+                "{{randomPetId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update a pet",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "let json;\r",
+                  "let parseError;\r",
+                  "\r",
+                  "// 1. Status Code\r",
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "// 2. Response Time\r",
+                  "pm.test(\"Response time is acceptable\", function () {\r",
+                  "    pm.expect(pm.response.responseTime)\r",
+                  "        .to.be.below(2000);\r",
+                  "});\r",
+                  "\r",
+                  "// 3. Content-Type\r",
+                  "pm.test(\"Content-Type is JSON\", function () {\r",
+                  "    const contentType = pm.response.headers.get(\"Content-Type\");\r",
+                  "\r",
+                  "    pm.expect(contentType).to.exist;\r",
+                  "    pm.expect(contentType.toLowerCase())\r",
+                  "        .to.match(/application\\/(json|[a-z0-9.+-]*\\+json)/);\r",
+                  "});\r",
+                  "\r",
+                  "// 4. Parse Response\r",
+                  "try {\r",
+                  "    json = pm.response.json();\r",
+                  "} catch (error) {\r",
+                  "    parseError = error;\r",
+                  "}\r",
+                  "\r",
+                  "// 5. Valid JSON\r",
+                  "pm.test(\"Response body is valid JSON\", function () {\r",
+                  "    pm.expect(\r",
+                  "        parseError,\r",
+                  "        \"Response body is not valid JSON\"\r",
+                  "    ).to.be.undefined;\r",
+                  "});\r",
+                  "\r",
+                  "if (!parseError) {\r",
+                  "\r",
+                  "    // 6. Response Structure\r",
+                  "    pm.test(\"Response has required fields\", function () {\r",
+                  "        pm.expect(json).to.be.an(\"object\");\r",
+                  "\r",
+                  "        pm.expect(json).to.have.property(\"code\");\r",
+                  "        pm.expect(json).to.have.property(\"type\");\r",
+                  "        pm.expect(json).to.have.property(\"message\");\r",
+                  "    });\r",
+                  "\r",
+                  "    // 7. Response Code\r",
+                  "    pm.test(\"Response code equals 200\", function () {\r",
+                  "        pm.expect(json.code).to.eql(200);\r",
+                  "    });\r",
+                  "\r",
+                  "    // 8. Response Message Contains Pet ID\r",
+                  "    pm.test(\"Response message matches pet ID\", function () {\r",
+                  "        const petId = pm.collectionVariables.get(\"randomPetId\");\r",
+                  "\r",
+                  "        pm.expect(\r",
+                  "            petId,\r",
+                  "            \"randomPetId collection variable is missing\"\r",
+                  "        ).to.not.be.oneOf([null, undefined, \"\"]);\r",
+                  "\r",
+                  "        pm.expect(\r",
+                  "            json.message,\r",
+                  "            \"Response message is missing\"\r",
+                  "        ).to.not.be.oneOf([null, undefined, \"\"]);\r",
+                  "\r",
+                  "        pm.expect(String(json.message))\r",
+                  "            .to.eql(String(petId));\r",
+                  "    });\r",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "name",
+                  "value": "odysy",
+                  "type": "text",
+                  "uuid": "5ff3c643-19b1-4720-9589-46bc90bbacf4"
+                },
+                {
+                  "key": "status",
+                  "value": "available",
+                  "type": "text",
+                  "uuid": "d361e2d3-67d1-4810-9ed3-e9291e4b4fac"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{Base_URL}}/pet/{{randomPetId}}",
+              "host": [
+                "{{Base_URL}}"
+              ],
+              "path": [
+                "pet",
+                "{{randomPetId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete a pet",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Store deleted pet ID after successful DELETE', function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "\r",
+                  "    let deletedPetId = pm.variables.get('randomPetId');\r",
+                  "\r",
+                  "    if (!deletedPetId) {\r",
+                  "        try {\r",
+                  "            const json = pm.response.json();\r",
+                  "            deletedPetId = json && json.message;\r",
+                  "        } catch (e) {}\r",
+                  "    }\r",
+                  "\r",
+                  "    pm.expect(deletedPetId, 'deleted pet ID should be available from randomPetId or response.message').to.exist;\r",
+                  "    pm.collectionVariables.set('deletedPetId', String(deletedPetId));\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response time is acceptable\", function () {\r",
+                  "    pm.expect(pm.response.responseTime)\r",
+                  "        .to.be.below(2000);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response Content-Type is JSON\", function () {\r",
+                  "    const contentType = pm.response.headers.get(\"Content-Type\");\r",
+                  "\r",
+                  "    pm.expect(contentType).to.exist;\r",
+                  "    pm.expect(contentType.toLowerCase())\r",
+                  "        .to.include(\"application/json\");\r",
+                  "});\r",
+                  "\r",
+                  "let jsonData;\r",
+                  "\r",
+                  "pm.test(\"Response body is valid JSON\", function () {\r",
+                  "    jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData).to.be.an(\"object\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response has required fields\", function () {\r",
+                  "    pm.expect(jsonData).to.have.property(\"code\");\r",
+                  "    pm.expect(jsonData).to.have.property(\"type\");\r",
+                  "    pm.expect(jsonData).to.have.property(\"message\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response code is 200\", function () {\r",
+                  "    pm.expect(jsonData.code).to.eql(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response message matches deleted radnom id\", function () {\r",
+                  "    const randomPetId = pm.collectionVariables.get(\"randomPetId\");\r",
+                  "\r",
+                  "    pm.expect(randomPetId).to.not.be.oneOf([null, undefined, \"\"]);\r",
+                  "    pm.expect(jsonData.message).to.not.be.oneOf([null, undefined, \"\"]);\r",
+                  "\r",
+                  "    pm.expect(String(jsonData.message))\r",
+                  "        .to.eql(String(randomPetId));\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{Base_URL}}/pet/{{randomPetId}}",
+              "host": [
+                "{{Base_URL}}"
+              ],
+              "path": [
+                "pet",
+                "{{randomPetId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Find a deleted pet",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 404', function () {\r",
+                  "    pm.response.to.have.status(404);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Response time is acceptable', function () {\r",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Response Content-Type is JSON', function () {\r",
+                  "    const contentType = pm.response.headers.get('Content-Type');\r",
+                  "\r",
+                  "    pm.expect(contentType).to.exist;\r",
+                  "    pm.expect(contentType.toLowerCase()).to.include('application/json');\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Response body indicates pet was not found', function () {\r",
+                  "    const jsonData = pm.response.json();\r",
+                  "\r",
+                  "    pm.expect(jsonData).to.be.an('object');\r",
+                  "\r",
+                  "    pm.expect(jsonData).to.have.property('code');\r",
+                  "    pm.expect(jsonData.code).to.eql(1);\r",
+                  "\r",
+                  "    pm.expect(jsonData).to.have.property('type');\r",
+                  "    pm.expect(jsonData.type).to.eql('error');\r",
+                  "\r",
+                  "    pm.expect(jsonData).to.have.property('message');\r",
+                  "    pm.expect(jsonData.message).to.eql('Pet not found');\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{Base_URL}}/pet/{{deletedPetId}}",
+              "host": [
+                "{{Base_URL}}"
+              ],
+              "path": [
+                "pet",
+                "{{deletedPetId}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "userName",
+      "value": ""
+    },
+    {
+      "key": "firstName",
+      "value": ""
+    },
+    {
+      "key": "lastName",
+      "value": ""
+    },
+    {
+      "key": "email",
+      "value": ""
+    },
+    {
+      "key": "userId",
+      "value": ""
+    },
+    {
+      "key": "userName2",
+      "value": ""
+    },
+    {
+      "key": "password",
+      "value": ""
+    },
+    {
+      "key": "sessionToken",
+      "value": ""
+    },
+    {
+      "key": "randomPetId",
+      "value": ""
+    },
+    {
+      "key": "deletedPetId",
+      "value": ""
+    },
+    {
+      "key": "petId",
+      "value": ""
+    },
+    {
+      "key": "orderId",
+      "value": ""
+    },
+    {
+      "key": "deletedOrderId",
+      "value": ""
+    }
+  ]
+}
